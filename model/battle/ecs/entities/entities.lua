@@ -40,7 +40,6 @@ end
 function Entities:set_world(world)
 	self.world = assert(world)
 	self.battle_model = assert(world.battle_model)
-	self.level = assert(world.battle_model.level)
 	self.ecs = assert(world.battle_model.ecs)
 end
 

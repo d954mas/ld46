@@ -1,7 +1,6 @@
 local COMMON = require "libs.common"
 local WORLD = require "model.world"
 local CURSOR_HELPER = require "libs_project.cursor_helper"
-local Levels = require "scenes.game.levels.levels"
 local BaseScene = require "libs.sm.scene"
 
 
@@ -13,11 +12,8 @@ end
 
 function Scene:load_done()
 	assert(self._input, "GameScene need input")
-	assert(self._input.level_id, "need level id")
-	self.level = Levels.load_level(self._input.level_id)
-	assert(self.level)
 	self.sm = requiref "libs_project.sm"
-	WORLD:battle_set_level(self.level)
+	WORLD:battle_set_level()
 end
 
 function Scene:show_done()

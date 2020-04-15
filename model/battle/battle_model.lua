@@ -1,16 +1,13 @@
 local COMMON = require "libs.common"
-local NativeCamera = require "model.battle.native_camera"
 local GameEcs = require "model.battle.ecs.game_ecs"
-local LevelCreator = require "model.battle.level_creator"
 
 ---@class BattleModel
 local Model = COMMON.class("BattleModel")
 
 ---@param world World
 ---@param level Level
-function Model:initialize(world, level)
+function Model:initialize(world)
 	self.world = assert(world)
-	self.level = assert(level)
 	self.time = 0
 	self.ecs = GameEcs(self.world)
 end
@@ -24,7 +21,6 @@ end
 function Model:load_level()
 	physics3d.init()
 	self.ecs:load_level()
-	LevelCreator(self.world):create()
 end
 
 function Model:update(dt)

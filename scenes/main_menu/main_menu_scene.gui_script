@@ -1,7 +1,6 @@
 local COMMON = require "libs.common"
 local GUI = require "assets.templates.gui_templates"
 local SM = require "libs_project.sm"
-local LEVELS = require "scenes.game.levels.levels"
 
 local Script = COMMON.new_n28s()
 
@@ -13,7 +12,7 @@ end
 
 function Script:init_gui()
 	self.view.btn_play:set_input_listener(function()
-		SM:show(SM.SCENES.GAME_SCENE, { level_id = LEVELS.LEVELS.LEVEL_1 })
+		SM:show(SM.SCENES.GAME_SCENE, {})
 	end)
 end
 
