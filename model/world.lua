@@ -18,7 +18,7 @@ function World:final()
 end
 
 ---@param level Level
-function World:battle_set_level()
+function World:battle_start()
 	checks("?")
 	assert(not self.battle_model, "battle model already created")
 	self.battle_model = BattleModel(self)

@@ -13,7 +13,7 @@ end
 function Scene:load_done()
 	assert(self._input, "GameScene need input")
 	self.sm = requiref "libs_project.sm"
-	WORLD:battle_set_level()
+	WORLD:battle_start()
 end
 
 function Scene:show_done()
