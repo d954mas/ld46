@@ -34,6 +34,9 @@ function World:init()
 		FLAT = { scene_name = self.SM.ROOMS.FLAT,
 					  objects = {
 						  door = { id = "door", action = true, order = 1 },
+						  phone = { id = "phone", action = true, order = 2 },
+						  curtains = { id = "curtains", action = true },
+						  box = { id = "box", action = true, },
 					  }
 		},
 		OPERATION = { scene_name = self.SM.ROOMS.OPERATION,
