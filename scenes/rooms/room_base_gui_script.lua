@@ -5,7 +5,6 @@ local RoomObjectView = require "model.rooms.room_object_view"
 ---@class RoomBaseGUI
 local Script = COMMON.new_n28s()
 
-
 function Script:bind_vh() end
 
 function Script:init_gui() end

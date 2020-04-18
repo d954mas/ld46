@@ -31,32 +31,40 @@ function World:init()
 
 	self.ROOMS_CONFIGS = {
 		--TO_ Take Object
-		OPERATION = { scene_name = self.SM.ROOMS.OPERATION, objects = {
-			box = { id = "box", info = true, order = 1 },
-			operation_table = { id = "operation_table", speech = true },
-			door = { id = "door", action = true },
-			lamp = { id = "lamp", info = true },
-			human = { id = "human", action = true, order = 10 },
-			table_with_wheels = { id = "table_with_wheels", action = true },
-			pc_top = { id = "pc_top", action = true },
-			pc_wall = { id = "pc_wall", action = true },
-			TO_banana = { id = "TO_banana", take = self.objects.banana },
-			TO_knife = { id = "TO_knife", take = self.objects.knife, order = 11 },
-		} }
+		FLAT = { scene_name = self.SM.ROOMS.FLAT,
+					  objects = {
+						  door = { id = "door", action = true, order = 1 },
+					  }
+		},
+		OPERATION = { scene_name = self.SM.ROOMS.OPERATION,
+					  objects = {
+						  box = { id = "box", info = true, order = 1 },
+						  operation_table = { id = "operation_table", speech = true },
+						  door = { id = "door", action = true },
+						  lamp = { id = "lamp", info = true },
+						  human = { id = "human", action = true, order = 10 },
+						  table_with_wheels = { id = "table_with_wheels", action = true },
+						  pc_top = { id = "pc_top", action = true },
+						  pc_wall = { id = "pc_wall", action = true },
+						  TO_banana = { id = "TO_banana", take = self.objects.banana },
+						  TO_knife = { id = "TO_knife", take = self.objects.knife, order = 11 },
+					  }
+		}
 	}
 
 	---@type InventoryObject[]
 	self.inventory = {}
 
 	self.rooms = {
-		OPERATION = Room(self.ROOMS_CONFIGS.OPERATION, self)
+		FLAT = Room(self.ROOMS_CONFIGS.FLAT, self),
+		START = Room(self.ROOMS_CONFIGS.OPERATION, self)
 	}
 
 	self.room_can_click = true
 
 	self.active_object = nil
 
-	self:room_change(self.rooms.OPERATION)
+	self:room_change(self.rooms.FLAT)
 
 end
 

@@ -2,11 +2,11 @@ local SM = require "libs.sm.scene_manager"
 --MAIN SCENE MANAGER
 local sm = SM()
 
-
 local scenes = {
 	require "scenes.main_menu.main_menu_scene",
 	require "scenes.game.game_scene",
-	require "scenes.rooms.operation.operation_scene"
+	require "scenes.rooms.operation.operation_scene",
+	require "scenes.rooms.flat.flat_room_scene"
 }
 
 sm.SCENES = {
@@ -15,7 +15,8 @@ sm.SCENES = {
 }
 
 sm.ROOMS = {
-	OPERATION = "OperationRoomScene"
+	OPERATION = "OperationRoomScene",
+	FLAT = "FlatRoomScene"
 }
 
 sm.MODALS = {

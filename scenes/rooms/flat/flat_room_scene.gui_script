@@ -1,0 +1,24 @@
+local COMMON = require "libs.common"
+local WORLD = require "model.world"
+local RoomObjectView = require "model.rooms.room_object_view"
+local ScriptBase = require "scenes.rooms.room_base_gui_script"
+
+---@class StartRoomSceneGUI:RoomBaseGUI
+local Script = COMMON.class("FlatRoomGUI",ScriptBase)
+
+function Script:bind_vh()
+end
+
+function Script:init_gui()
+end
+
+function Script:bind_room()
+	self.room = WORLD.rooms.FLAT
+end
+
+function Script:bind_config()
+	self.config = WORLD.ROOMS_CONFIGS.FLAT
+end
+
+
+COMMON.N28S.register(Script())
