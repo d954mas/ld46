@@ -32,12 +32,12 @@ function World:init()
 	self.ROOMS_CONFIGS = {
 		--TO_ Take Object
 		FLAT = { scene_name = self.SM.ROOMS.FLAT,
-					  objects = {
-						  door = { id = "door", action = true, order = 1 },
-						  phone = { id = "phone", action = true, order = 2 },
-						  curtains = { id = "curtains", action = true },
-						  box = { id = "box", action = true, },
-					  }
+				 objects = {
+					 door = { id = "door", action = true, order = 1 },
+					 phone = { id = "phone", action = true, order = 2 },
+					 curtains = { id = "curtains", action = true },
+					 box = { id = "box", action = true, },
+				 }
 		},
 		OPERATION = { scene_name = self.SM.ROOMS.OPERATION,
 					  objects = {
@@ -69,6 +69,10 @@ function World:init()
 
 	self:room_change(self.rooms.FLAT)
 
+	self.game_events = {
+		flat_phone_call = true
+	}
+
 end
 
 function World:take_object(object)
@@ -79,6 +83,21 @@ function World:take_object(object)
 	assert(not self.objects[object.id], "no object with id:" .. object.take.id)
 	self:inventory_add_object(object.take)
 end
+
+---@param object RoomObject
+function World:interact_object(object)
+	if (self.current_room == self.rooms.FLAT) then
+		if (object.config.id == "phone") then
+			if (self.game_events.flat_phone_call) then
+				self.game_events.flat_phone_call = false
+				--show dialog
+			else
+				--reaction i do not need to call someone
+			end
+		end
+	end
+end
+
 ---@param object InventoryObject
 function World:inventory_add_object(object)
 	assert(object)
@@ -103,6 +122,9 @@ function World:user_click()
 		COMMON.i("click on:" .. self.current_room.object_over.config.id, "ROOM")
 		if (self.current_room.object_over.take) then
 			self:take_object(self.current_room.object_over)
+		end
+		if (self.current_room.object_over.action)then
+			self:interact_object(self.current_room.object_over)
 		end
 	end
 end

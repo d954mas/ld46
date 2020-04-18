@@ -26,7 +26,7 @@ function Script:init_done()
 	local f_anim_phone_call
 	local start_pos = gui.get_position(phone.view.config.root)
 	f_anim_phone_call = function()
-		while (phone) do
+		while (WORLD.game_events.flat_phone_call) do
 			local time = 0
 			if (phone) then
 				while (time < 1.2) do
