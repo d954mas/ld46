@@ -4,12 +4,13 @@ local RoomObjectView = require "model.rooms.room_object_view"
 local ScriptBase = require "scenes.rooms.room_base_gui_script"
 
 ---@class StartRoomSceneGUI:RoomBaseGUI
-local Script = COMMON.class("FlatRoomGUI",ScriptBase)
+local Script = COMMON.class("FlatRoomGUI", ScriptBase)
 
 function Script:bind_vh()
 end
 
 function Script:init_gui()
+
 end
 
 function Script:bind_room()
@@ -20,5 +21,25 @@ function Script:bind_config()
 	self.config = WORLD.ROOMS_CONFIGS.FLAT
 end
 
+function Script:init_done()
+	local phone = self.room:get_object_by_id("phone")
+	local f_anim_phone_call
+	local start_pos = gui.get_position(phone.view.config.root)
+	f_anim_phone_call = function()
+		while (phone) do
+			local time = 0
+			if (phone) then
+				while (time < 1.2) do
+					time = time + coroutine.yield()
+					gui.set_position(phone.view.config.root,vmath.vector3(start_pos.x + math.random(-3,3),start_pos.y+ math.random(-3,3),start_pos.z))
+				end
+			end
+			gui.set_position(phone.view.config.root,start_pos)
+			COMMON.COROUTINES.coroutine_wait(0.9)
+		end
+		gui.set_position(phone.view.config.root,start_pos)
+	end
+	self.thread:add(f_anim_phone_call)
+end
 
 COMMON.N28S.register(Script())
