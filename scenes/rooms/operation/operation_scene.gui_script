@@ -1,45 +1,24 @@
 local COMMON = require "libs.common"
 local WORLD = require "model.world"
 local RoomObjectView = require "model.rooms.room_object_view"
+local ScriptBase = require "scenes.rooms.room_base_gui_script"
 
-local Script = COMMON.new_n28s()
+---@class OperationRoomGUI:RoomBaseGUI
+local Script = COMMON.class("OperationRoomGUI",ScriptBase)
 
 function Script:bind_vh()
-	self.view = {
-
-	}
 end
 
 function Script:init_gui()
-
 end
 
-function Script:init()
-	COMMON.input_acquire()
-	self:bind_vh()
-	self:init_gui()
-
+function Script:bind_room()
 	self.room = WORLD.rooms.OPERATION
-
-	local config = WORLD.ROOMS_CONFIGS.OPERATION
-
-	for k, object in pairs(config.objects) do
-		self.room:get_object_by_id(object.id):set_view(RoomObjectView({ root = gui.get_node(object.id) }))
-	end
 end
 
-function Script:update(dt) end
-
-function Script:final()
-	COMMON.input_release()
+function Script:bind_config()
+	self.config = WORLD.ROOMS_CONFIGS.OPERATION
 end
 
-function Script:on_input(action_id, action)
-	self.room:on_input(action_id, action)
-
-	if action_id == COMMON.HASHES.INPUT.TOUCH and action.pressed then
-		WORLD:user_click()
-	end
-end
 
 COMMON.N28S.register(Script())
