@@ -6,9 +6,13 @@ local TAG = "SCENE"
 ---@class SceneConfig
 ---@field modal boolean
 ---@field keep_loaded boolean
+---@field always_show boolean
+---@field always_run boolean
 local SCENE_CONFIG_DEFAULT = {
 	modal = false,
-	keep_loaded = false
+	keep_loaded = false,
+	always_show = false,
+	always_run = false
 }
 
 --scene is singleton
@@ -21,7 +25,8 @@ function Scene:initialize(name, url, config)
 	checks("?", "string", "string|url", {
 		modal = "?boolean",
 		keep_loading = "?boolean",
-		always_show = "?boolean"
+		always_show = "?boolean",
+		always_run = "?boolean",
 	})
 	self._name = name
 	self._url = msg.url(url)

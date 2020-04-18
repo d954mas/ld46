@@ -5,11 +5,10 @@ local BaseScene = require "libs.sm.scene"
 ---@class GameScene:Scene
 local Scene = BaseScene:subclass("GameScene")
 function Scene:initialize()
-	BaseScene.initialize(self, "GameScene", "/game_scene#collectionproxy", { always_show = true })
+	BaseScene.initialize(self, "GameScene", "/game_scene#collectionproxy", { always_show = true, always_run = true })
 end
 
 function Scene:load_done()
-	assert(self._input, "GameScene need input")
 	self.sm = requiref "libs_project.sm"
 	WORLD:init()
 end

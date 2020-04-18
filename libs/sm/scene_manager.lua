@@ -151,6 +151,7 @@ function M:_load_scene_f(scene)
 	end
 end
 
+---@param scene Scene
 ---@param config SceneUnloadConfig
 function M:_unload_scene_f(scene, config)
 	checks("?", "Scene", {
@@ -160,7 +161,7 @@ function M:_unload_scene_f(scene, config)
 	})
 	config = config or {}
 
-	if scene._state == SCENE_ENUMS.STATES.RUNNING then
+	if scene._state == SCENE_ENUMS.STATES.RUNNING and not scene._config.always_show then
 		--if !config.skip_transition then scene_transition(self,scene,scene.STATIC.TRANSITIONS.ON_HIDE) end
 		scene:pause()
 	end
@@ -170,7 +171,7 @@ function M:_unload_scene_f(scene, config)
 		while config.new_scene._state == SCENE_ENUMS.STATES.LOADING do coroutine.yield() end
 	end
 
-	if scene._state == SCENE_ENUMS.STATES.PAUSED and not config.keep_show then
+	if scene._state == SCENE_ENUMS.STATES.PAUSED and not config.keep_show and not scene._config.always_show then
 		scene:hide()
 	end
 	if scene._state == SCENE_ENUMS.STATES.HIDE and not scene._config.keep_loaded then
