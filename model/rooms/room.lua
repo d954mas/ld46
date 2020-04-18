@@ -21,6 +21,18 @@ function Room:initialize(config, world)
 end
 
 ---@param object RoomObject
+function Room:object_set_over(object)
+	if(self.object_over == object) then return end
+	if(self.object_over) then
+		COMMON.LOG.i("object:" .. self.object_over.config.id .. " over end","ROOM")
+	end
+	self.object_over = object
+	if(self.object_over) then
+		COMMON.LOG.i("object:" .. self.object_over.config.id .. " over","ROOM")
+	end
+end
+
+---@param object RoomObject
 function Room:add_object(object)
 	assert(object)
 	assert(not self.objects[object.config.id])

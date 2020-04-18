@@ -8,8 +8,7 @@ Manager.NAMES = {
 	MAIN = "MAIN",
 	GAME = "GAME",
 	RENDER = "RENDER",
-	LIGHT_MAP_SCRIPT = "LIGHT_MAP_SCRIPT",
-	DYNAMIC_LIGHT = "DYNAMIC_LIGHT",
+	GAME_UI = "GAME_UI",
 }
 
 ---@class ContextStackWrapperMain:ContextStackWrapper
@@ -18,6 +17,20 @@ Manager.NAMES = {
 ---@return ContextStackWrapperMain
 function Manager:set_context_top_main()
 	return self:set_context_top_by_name(self.NAMES.MAIN)
+end
+
+
+---@class ContextStackWrapperGameUI:ContextStackWrapper
+-----@field data GameUIGuiScript
+
+---@return ContextStackWrapperMain
+function Manager:set_context_top_main()
+	return self:set_context_top_by_name(self.NAMES.MAIN)
+end
+
+---@return ContextStackWrapperGameUI
+function Manager:set_context_top_game_ui()
+	return self:set_context_top_by_name(self.NAMES.GAME_UI)
 end
 
 return Manager()

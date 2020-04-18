@@ -1,0 +1,57 @@
+local COMMON = require "libs.common"
+
+---@class GameUIGuiScript
+local Script = COMMON.new_n28s()
+
+function Script:bind_vh()
+	self.vh = {
+		mouse_follow = {
+			root = gui.get_node("mouse_follow"),
+			text = gui.get_node("mouse_follow/text")
+		}
+	}
+	self.view = {
+
+	}
+end
+
+function Script:init_gui()
+	gui.set_render_order(2)
+end
+
+function Script:init()
+	COMMON.input_acquire()
+	COMMON.CONTEXT:register(COMMON.CONTEXT.NAMES.GAME_UI,self)
+	self:bind_vh()
+	self:init_gui()
+end
+
+function Script:update(dt) end
+
+function Script:final()
+	COMMON.CONTEXT:unregister(COMMON.CONTEXT.NAMES.GAME_UI)
+	COMMON.input_release()
+end
+
+function Script:on_input(action_id, action)
+	if(action_id == nil or action_id == COMMON.HASHES.INPUT.TOUCH)then
+		gui.set_position(self.vh.mouse_follow.root,vmath.vector3(action.x,action.y,0))
+	end
+end
+
+---@param object RoomObject
+function Script:room_set_over_object(object)
+	if(self.object_over == object) then return end
+	if(object)then
+		self:mouse_follow_set_text(object.config.id)
+	else
+		self:mouse_follow_set_text("")
+	end
+
+end
+
+function Script:mouse_follow_set_text(text)
+	gui.set_text(self.vh.mouse_follow.text,text)
+end
+
+COMMON.N28S.register(Script())

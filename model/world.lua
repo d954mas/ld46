@@ -11,7 +11,10 @@ function World:initialize()
 end
 
 function World:update(dt)
-
+	if(self.current_room) then
+		local ctx = COMMON.CONTEXT:set_context_top_game_ui()
+		ctx.data:room_set_over_object(self.current_room.object_over)
+	end
 end
 
 function World:init()
