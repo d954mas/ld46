@@ -1,5 +1,6 @@
 local COMMON = require "libs.common"
 local Room = require "model.rooms.room"
+local SpeechContent = require "model.speech.speech_content"
 
 ---@class World
 ---@field battle_model BattleModel|nil
@@ -66,6 +67,7 @@ function World:init()
 	self.room_can_click = true
 
 	self.active_object = nil
+	self.speech = false
 
 	self:room_change(self.rooms.FLAT)
 
@@ -77,6 +79,7 @@ end
 
 function World:take_object(object)
 	if (self.active_object) then return end
+	if (self.speech) then return end
 	assert(object)
 	assert(object.take)
 	self.current_room:remove_object(object)
@@ -86,10 +89,12 @@ end
 
 ---@param object RoomObject
 function World:interact_object(object)
+	if(self.speech) then return end
 	if (self.current_room == self.rooms.FLAT) then
 		if (object.config.id == "phone") then
 			if (self.game_events.flat_phone_call) then
 				self.game_events.flat_phone_call = false
+				self:dialog(SpeechContent.FLAT_PHONE_CALL_1.id)
 				--show dialog
 			else
 				--reaction i do not need to call someone
@@ -115,7 +120,7 @@ function World:inventory_remove_object(object)
 end
 
 function World:user_click()
-	if (self.active_object) then
+	if (self.active_object or self.speech) then
 		return
 	end
 	if (self.room_can_click and self.current_room.object_over) then
@@ -123,15 +128,20 @@ function World:user_click()
 		if (self.current_room.object_over.take) then
 			self:take_object(self.current_room.object_over)
 		end
-		if (self.current_room.object_over.action)then
+		if (self.current_room.object_over.action) then
 			self:interact_object(self.current_room.object_over)
 		end
 	end
 end
 
+function World:dialog(id)
+	msg.post("game_scene:/speech_controller", "trigger_speech", { id = id })
+end
+
 ---@param object_1 InventoryObject
 ---@param object_2 InventoryObject
 function World:mix_object(object_1, object_2)
+	if(self.speech) then return end
 	assert(object_1)
 	assert(object_2)
 	--objects order is in alphabet. knife->banana == banana->knife
