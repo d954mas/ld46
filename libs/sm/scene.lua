@@ -20,7 +20,8 @@ local Scene = COMMON.class('Scene')
 function Scene:initialize(name, url, config)
 	checks("?", "string", "string|url", {
 		modal = "?boolean",
-		keep_loading = "?boolean"
+		keep_loading = "?boolean",
+		always_show = "?boolean"
 	})
 	self._name = name
 	self._url = msg.url(url)

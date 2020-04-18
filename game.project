@@ -1,5 +1,5 @@
 [project]
-title = 2.5D Shooter
+title = LD46
 version = 0.1.0
 dependencies = https://github.com/Melsoft-Games/defold-cjson/archive/master.zip,https://github.com/DanEngelbrecht/LuaScriptInstance/archive/master.zip,https://github.com/subsoap/defos/archive/master.zip,https://github.com/d954mas/defold-utf8/archive/master.zip
 custom_resources = assets/levels/result/

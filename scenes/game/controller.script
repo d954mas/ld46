@@ -16,7 +16,6 @@ end
 function Script:init()
 	self:init_input()
 	self:init_msg()
-	WORLD.battle_model:load_level()
 	COMMON.CONTEXT:register(COMMON.CONTEXT.NAMES.GAME, self)
 end
 
@@ -25,12 +24,11 @@ function Script:on_message(message_id, message, sender)
 end
 
 function Script:update(dt)
-	WORLD.battle_model:update(dt)
+
 end
 
 function Script:on_input(action_id, action)
 	self.input:on_input(self, action_id, action)
-	WORLD.battle_model.ecs:add_entity(WORLD.battle_model.ecs.entities:create_input(action_id or COMMON.INPUT.HASH_NIL, action))
 end
 
 function Script:final()
