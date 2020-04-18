@@ -1,4 +1,6 @@
 local COMMON = require "libs.common"
+local WORLD = require "model.world"
+local RoomObjectView = require "model.rooms.room_object_view"
 
 local Script = COMMON.new_n28s()
 
@@ -16,6 +18,14 @@ function Script:init()
 	COMMON.input_acquire()
 	self:bind_vh()
 	self:init_gui()
+
+	self.room = WORLD.rooms.OPERATION
+
+	local config = WORLD.ROOMS_CONFIGS.OPERATION
+
+	for k,object in pairs(config.objects)do
+		self.room:get_object_by_id(object.id):set_view(RoomObjectView({ root = gui.get_node(object.id) }))
+	end
 end
 
 function Script:update(dt) end
@@ -25,6 +35,16 @@ function Script:final()
 end
 
 function Script:on_input(action_id, action)
+	local hit = false
+	for _, object in pairs(self.room.objects) do
+		if (not hit and object.view:is_hit(action.x, action.y)) then
+			if(not object.view.pointer_over) then COMMON.LOG.i("object:" .. object.config.id .. " over","ROOM") end
+			object.view.pointer_over = true
+		else
+			if(object.view.pointer_over)then COMMON.LOG.i("object:" .. object.config.id .. " over end","ROOM") end
+			object.view.pointer_over = false
+		end
+	end
 
 end
 

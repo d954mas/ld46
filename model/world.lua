@@ -1,8 +1,7 @@
 local COMMON = require "libs.common"
 local Room = require "model.rooms.room"
 
----@class RoomConfig
----@field scene_name string
+
 
 ---@class World
 ---@field battle_model BattleModel|nil
@@ -18,8 +17,18 @@ end
 function World:init()
 	self.SM = requiref "libs_project.sm"
 	self.ROOMS_CONFIGS = {
-		OPERATION = { scene_name = self.SM.ROOMS.OPERATION }
+		OPERATION = { scene_name = self.SM.ROOMS.OPERATION, objects = {
+			box = {id = "box"},
+			operation_table = {id = "operation_table"},
+			door = {id = "door"},
+			lamp = {id = "lamp"},
+			human = {id = "human"},
+			table_with_wheels = {id = "table_with_wheels"},
+			pc_top = {id = "pc_top"},
+			pc_wall = {id = "pc_wall"},
+		} }
 	}
+
 
 	self.rooms = {
 		OPERATION = Room(self.ROOMS_CONFIGS.OPERATION, self)
