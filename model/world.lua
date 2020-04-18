@@ -21,11 +21,11 @@ function World:init()
 	self.SM = requiref "libs_project.sm"
 	self.ROOMS_CONFIGS = {
 		OPERATION = { scene_name = self.SM.ROOMS.OPERATION, objects = {
-			box = { id = "box", info = true },
+			box = { id = "box", info = true, order = 1 },
 			operation_table = { id = "operation_table", speech = true },
 			door = { id = "door", action = true },
 			lamp = { id = "lamp", info = true },
-			human = { id = "human", action = true },
+			human = { id = "human", action = true, order = 10 },
 			table_with_wheels = { id = "table_with_wheels", action = true },
 			pc_top = { id = "pc_top", action = true },
 			pc_wall = { id = "pc_wall", action = true },

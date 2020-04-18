@@ -15,12 +15,15 @@ function Room:initialize(config, world)
 	self.world = assert(world)
 	---@type RoomObject[]
 	self.objects = {}
+	local order = 0
 	for k, object in pairs(self.config.objects) do
+		order = order + 0.001
 		local room_object = RoomObject({ id = object.id })
 		if (object.info) then room_object:set_info(object.info) end
 		if (object.speech) then room_object:set_speech(object.speech) end
 		if (object.action) then room_object:set_action(object.action) end
 		assert(room_object.info or room_object.action or room_object.speech, "no action:" .. object.id)
+		room_object:set_order(object.order or order)
 		self:add_object(room_object)
 	end
 end

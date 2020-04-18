@@ -33,6 +33,10 @@ function Object:set_speech(action)
 	self.speech = action
 end
 
+function Object:set_order(order)
+	self.order = assert(order)
+end
+
 ---@param view RoomObjectView
 function Object:set_view(view)
 	view:set_room_object(self)
