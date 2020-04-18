@@ -26,6 +26,11 @@ function World:init()
 	self.SM = requiref "libs_project.sm"
 
 	self.objects = {
+		flat_mask = { id = "flat_mask", icon = hash("unknown") },
+		flat_medical_gown = { id = "flat_medical_gown", icon = hash("unknown") },
+		flat_curtains_part = { id = "flat_curtains_part", icon = hash("unknown") },
+		flat_strings = { id = "flat_strings", icon = hash("unknown") },
+		flat_knife = { id = "flat_knife", icon = hash("knife_icon") },
 		banana = { id = "banana", icon = hash("banana_icon") },
 		knife = { id = "knife", icon = hash("knife_icon") }
 	}
@@ -61,18 +66,22 @@ function World:init()
 
 	self.rooms = {
 		FLAT = Room(self.ROOMS_CONFIGS.FLAT, self),
-		START = Room(self.ROOMS_CONFIGS.OPERATION, self)
+		OPERATION = Room(self.ROOMS_CONFIGS.OPERATION, self)
 	}
 
 	self.room_can_click = true
 
+	---@type InventoryObject
 	self.active_object = nil
 	self.speech = false
 
 	self:room_change(self.rooms.FLAT)
 
 	self.game_events = {
-		flat_phone_call = true
+		flat = {
+			phone_call = true,
+			box_opened = false,
+		}
 	}
 
 end
@@ -89,16 +98,44 @@ end
 
 ---@param object RoomObject
 function World:interact_object(object)
-	if(self.speech) then return end
+	if (self.speech) then return end
+	COMMON.i("interact with:" .. object.config.id)
 	if (self.current_room == self.rooms.FLAT) then
+		local room_objects = self.ROOMS_CONFIGS.FLAT.objects
 		if (object.config.id == "phone") then
-			if (self.game_events.flat_phone_call) then
-				self.game_events.flat_phone_call = false
+			if (self.game_events.flat.phone_call) then
+				self.game_events.flat.phone_call = false
 				self:dialog(SpeechContent.FLAT_PHONE_CALL_1.id)
 				--show dialog
 			else
 				--reaction i do not need to call someone
 			end
+		elseif (object.config.id == room_objects.door.id) then
+			if (not self.game_events.flat.phone_call) then
+				if (self:inventory_have_object(self.objects.flat_mask) and self:inventory_have_object(self.objects.flat_medical_gown)) then
+					self:dialog(SpeechContent.FLAT_EXIT.id)
+				else
+					self:dialog(SpeechContent.FLAT_NO_EXIT_NEED_ITEMS.id)
+				end
+
+			end
+		elseif (object.config.id == room_objects.box.id) then
+			if (not self.game_events.flat.box_opened and not self.game_events.flat.phone_call) then
+				self:dialog(SpeechContent.FLAT_OPEN_BOX.id)
+				self.game_events.flat.box_opened = true
+			end
+		elseif (object.config.id == room_objects.curtains.id) then
+
+		end
+	end
+end
+
+function World:interact_object_with_item(object)
+	assert(self.active_object)
+	COMMON.i("use:" .. self.active_object.id .. " on " .. object.config.id)
+	if (self.current_room == self.rooms.FLAT) then
+		if (self.active_object == self.objects.flat_knife) then
+			self:dialog(SpeechContent.FLAT_CUT_CURTAINS.id)
 		end
 	end
 end
@@ -108,6 +145,11 @@ function World:inventory_add_object(object)
 	assert(object)
 	assert(not COMMON.LUME.findi(self.inventory, object))
 	table.insert(self.inventory, object)
+end
+
+function World:inventory_have_object(object)
+	assert(object)
+	return COMMON.LUME.findi(self.inventory, object)
 end
 
 ---@param object InventoryObject
@@ -134,6 +176,24 @@ function World:user_click()
 	end
 end
 
+function World:dialog_completed(id)
+	COMMON.i("Dialog completed:" .. id)
+	if (id == SpeechContent.FLAT_OPEN_BOX.id) then
+		self:inventory_add_object(self.objects.flat_medical_gown)
+		self:inventory_add_object(self.objects.flat_strings)
+		self:inventory_add_object(self.objects.flat_knife)
+	end
+	if (id == SpeechContent.FLAT_CUT_CURTAINS.id) then
+		self:inventory_add_object(self.objects.flat_curtains_part)
+	end
+	if (id == SpeechContent.FLAT_EXIT.id) then
+		self:inventory_remove_object(self.objects.flat_medical_gown)
+		self:inventory_remove_object(self.objects.flat_mask)
+		self:inventory_remove_object(self.objects.flat_knife)
+		self:room_change(self.rooms.OPERATION)
+	end
+end
+
 function World:dialog(id)
 	msg.post("game_scene:/speech_controller", "trigger_speech", { id = id })
 end
@@ -141,7 +201,7 @@ end
 ---@param object_1 InventoryObject
 ---@param object_2 InventoryObject
 function World:mix_object(object_1, object_2)
-	if(self.speech) then return end
+	if (self.speech) then return end
 	assert(object_1)
 	assert(object_2)
 	--objects order is in alphabet. knife->banana == banana->knife
@@ -151,6 +211,16 @@ function World:mix_object(object_1, object_2)
 		object_2 = object_tmp
 	end
 	print("mix " .. object_1.id .. " vs " .. object_2.id)
+
+	if (self.current_room == self.rooms.FLAT) then
+		if (object_1.id == self.objects.flat_curtains_part.id) then
+			if (object_2.id == self.objects.flat_strings.id) then
+				self:inventory_remove_object(object_1)
+				self:inventory_remove_object(object_2)
+				self:inventory_add_object(self.objects.flat_mask)
+			end
+		end
+	end
 
 	if (object_1.id == "banana") then
 		self:inventory_remove_object(object_1)

@@ -11,6 +11,10 @@ end
 
 function Scene:load_done()
 	self.sm = requiref "libs_project.sm"
+	self.sheduler = COMMON.RX.CooperativeScheduler.create()
+	self.subscription = COMMON.EVENT_BUS:subscribe("speech_ended"):go(self.sheduler):subscribe(function(data)
+		WORLD:dialog_completed(data.id)
+	end)
 	WORLD:init()
 end
 
@@ -34,6 +38,7 @@ function Scene:resume_done()
 end
 
 function Scene:update(dt)
+	self.sheduler:update(dt)
 	WORLD:update(dt)
 end
 
@@ -41,6 +46,7 @@ function Scene:on_input(action_id, action)
 end
 
 function Scene:unload_done()
+	self.subscription:unsubscribe()
 	WORLD:final()
 end
 

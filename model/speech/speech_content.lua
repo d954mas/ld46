@@ -19,6 +19,46 @@ local speech_content = {
 		},
 		next = nil
 	},
+	FLAT_NO_EXIT_NEED_ITEMS = {
+		id = "FLAT_NO_EXIT_NEED_ITEMS",
+		texture = "23 Zombie Knight",
+		display_name = "Me",
+		content = "I can't go out without my medical gown and mask",
+		choices = {
+			{ text = "Let's find it" },
+		},
+		next = nil
+	},
+	FLAT_EXIT = {
+		id = "FLAT_EXIT",
+		texture = "23 Zombie Knight",
+		display_name = "Me",
+		content = "Go and save someone life.",
+		choices = {
+			{ text = "Go to hospital" },
+		},
+		next = nil
+	},
+	FLAT_OPEN_BOX = {
+		id = "FLAT_OPEN_BOX",
+		texture = "23 Zombie Knight",
+		display_name = "Me",
+		content = "My medical gown. Knife and strings",
+		choices = {
+			{ text = "Now let's find mask" },
+		},
+		next = nil
+	},
+	FLAT_CUT_CURTAINS= {
+		id = "FLAT_CUT_CURTAINS",
+		texture = "23 Zombie Knight",
+		display_name = "Me",
+		content = "If you cut a small piece, then no one will notice",
+		choices = {
+			{ text = "Cut" },
+		},
+		next = nil
+	},
 
 }
 

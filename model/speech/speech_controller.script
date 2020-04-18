@@ -1,3 +1,4 @@
+local COMMON = require "libs.common"
 
 local speech_content = require "model.speech.speech_content"
 
@@ -15,6 +16,7 @@ local function post_event(event, self, args)
 	for i, p in ipairs(self.listeners) do
 		msg.post(p, event, args)
 	end
+	COMMON.EVENT_BUS:event(event,{id = args.index})
 end
 
 function on_message(self, message_id, message, sender)
