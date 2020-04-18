@@ -2080,7 +2080,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
   parent: "mouse_follow"
-  layer: "text"
+  layer: "text_top"
   inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
@@ -2372,6 +2372,9 @@ layers {
 }
 layers {
   name: "top"
+}
+layers {
+  name: "text_top"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

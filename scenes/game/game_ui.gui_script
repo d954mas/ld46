@@ -62,6 +62,15 @@ function Script:set_icon(object)
 	end
 end
 
+function Script:set_icon_by_vh(vh)
+	gui.set_enabled(self.vh.mouse_follow.icon_base, false)
+	gui.set_enabled(self.vh.mouse_follow.icon_info, false)
+	gui.set_enabled(self.vh.mouse_follow.icon_speech, false)
+	gui.set_enabled(self.vh.mouse_follow.icon_action, false)
+	gui.set_enabled(self.vh.mouse_follow.icon_take, false)
+	gui.set_enabled(vh, true)
+end
+
 function Script:init_gui()
 	gui.set_render_order(2)
 end
@@ -173,10 +182,13 @@ function Script:on_input(action_id, action)
 		local over_object = WORLD.inventory[self.inventory_cell_over_idx]
 		if (over_object and over_object ~= WORLD.active_object) then
 			self:mouse_follow_set_text("mix " .. WORLD.active_object.id .. " vs " .. over_object.id)
+			self:set_icon_by_vh(self.vh.mouse_follow.icon_action)
 		elseif(WORLD.room_can_click and WORLD.current_room.object_over)then
 			self:mouse_follow_set_text("use " .. WORLD.active_object.id .. " vs " .. WORLD.current_room.object_over.config.id)
+			self:set_icon_by_vh(self.vh.mouse_follow.icon_action)
 		else
 			self:mouse_follow_set_text("use " .. WORLD.active_object.id)
+			self:set_icon_by_vh(self.vh.mouse_follow.icon_base)
 		end
 		gui.set_position(self.vh.icon_active.root, vmath.vector3(action.x + self.vh.icon_active.pos_delta.x, action.y + self.vh.icon_active.pos_delta.y, 0))
 	else
