@@ -10,7 +10,7 @@ end
 
 function World:update(dt)
 	if (self.current_room) then
-		if(COMMON.CONTEXT:exist(COMMON.CONTEXT.NAMES.GAME_UI)) then
+		if (COMMON.CONTEXT:exist(COMMON.CONTEXT.NAMES.GAME_UI)) then
 			local ctx = COMMON.CONTEXT:set_context_top_game_ui()
 			ctx.data:room_set_over_object(self.current_room.object_over)
 		end
@@ -20,6 +20,7 @@ end
 function World:init()
 	self.SM = requiref "libs_project.sm"
 	self.ROOMS_CONFIGS = {
+		--TO_ Take Object
 		OPERATION = { scene_name = self.SM.ROOMS.OPERATION, objects = {
 			box = { id = "box", info = true, order = 1 },
 			operation_table = { id = "operation_table", speech = true },
@@ -29,14 +30,35 @@ function World:init()
 			table_with_wheels = { id = "table_with_wheels", action = true },
 			pc_top = { id = "pc_top", action = true },
 			pc_wall = { id = "pc_wall", action = true },
+			TO_banana = { id = "TO_banana", take = true },
 		} }
 	}
+
+	self.objects = {
+		banana = { id = "banana", view = {icon_scale = 0.55} }
+	}
+
+	self.inventory = {}
 
 	self.rooms = {
 		OPERATION = Room(self.ROOMS_CONFIGS.OPERATION, self)
 	}
 
 	self:room_change(self.rooms.OPERATION)
+
+end
+
+function World:take_object(object)
+	assert(object)
+	assert(self.objects[object.id])
+	assert(not COMMON.LUME.findi(self.inventory, object))
+	table.insert(self.inventory, object)
+end
+
+function World:user_click()
+	if(self.current_room.object_over)then
+		COMMON.i("click on:" .. self.current_room.object_over.config.id, "ROOM")
+	end
 end
 
 ---@param room Room

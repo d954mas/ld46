@@ -12,6 +12,7 @@ function Script:bind_vh()
 			icon_info = gui.get_node("mouse_follow/icon_info"),
 			icon_speech = gui.get_node("mouse_follow/icon_speech"),
 			icon_action = gui.get_node("mouse_follow/icon_action"),
+			icon_take = gui.get_node("mouse_follow/icon_take"),
 		}
 	}
 	self.view = {
@@ -25,11 +26,13 @@ function Script:set_icon(object)
 	gui.set_enabled(self.vh.mouse_follow.icon_info, false)
 	gui.set_enabled(self.vh.mouse_follow.icon_speech, false)
 	gui.set_enabled(self.vh.mouse_follow.icon_action, false)
+	gui.set_enabled(self.vh.mouse_follow.icon_take, false)
 	if (not object) then gui.set_enabled(self.vh.mouse_follow.icon_base, true)
 	else
 		if (object.speech) then gui.set_enabled(self.vh.mouse_follow.icon_speech, true) end
 		if (object.action) then gui.set_enabled(self.vh.mouse_follow.icon_action, true) end
 		if (object.info) then gui.set_enabled(self.vh.mouse_follow.icon_info, true) end
+		if (object.take) then gui.set_enabled(self.vh.mouse_follow.icon_take, true) end
 	end
 end
 

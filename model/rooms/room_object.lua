@@ -21,16 +21,21 @@ function Object:set_room(room)
 end
 
 function Object:set_info(info)
-	assert(not self.info and not self.action and not self.speech)
+	assert(not self.info and not self.action and not self.speech and not self.take)
 	self.info = info
 end
 function Object:set_action(action)
-	assert(not self.info and not self.action and not self.speech)
+	assert(not self.info and not self.action and not self.speech and  not self.take)
 	self.action = action
 end
 function Object:set_speech(action)
-	assert(not self.info and not self.action and not self.speech)
+	assert(not self.info and not self.action and not self.speech and not self.take)
 	self.speech = action
+end
+
+function Object:set_take(take)
+	assert(not self.info and not self.action and not self.speech and not self.take)
+	self.take = take
 end
 
 function Object:set_order(order)

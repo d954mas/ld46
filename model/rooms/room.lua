@@ -22,8 +22,10 @@ function Room:initialize(config, world)
 		if (object.info) then room_object:set_info(object.info) end
 		if (object.speech) then room_object:set_speech(object.speech) end
 		if (object.action) then room_object:set_action(object.action) end
-		assert(room_object.info or room_object.action or room_object.speech, "no action:" .. object.id)
+		if (object.take) then room_object:set_take(object.take) end
+
 		room_object:set_order(object.order or order)
+		print("add object:" .. room_object.config.id)
 		self:add_object(room_object)
 	end
 end
@@ -44,6 +46,7 @@ end
 function Room:add_object(object)
 	assert(object)
 	assert(not self.objects[object.config.id])
+	assert(object.info or object.action or object.speech or object.take, "no action:" .. object.config.id)
 	self.objects[object.config.id] = object
 	object:set_room(self)
 end
@@ -52,6 +55,21 @@ end
 function Room:get_object_by_id(id)
 	assert(id)
 	return assert(self.objects[id], "no object with id" .. id)
+end
+
+function Room:on_input(action_id, action)
+	local over_objects = {}
+	for _, object in pairs(self.objects) do
+		if (object.view:is_hit(action.x, action.y)) then
+			table.insert(over_objects, object)
+		end
+	end
+	table.sort(over_objects, function(a, b)
+		local order_a = a.order or 0
+		local order_b = b.order or 0
+		return order_a >= order_b
+	end)
+	self:object_set_over(over_objects[1])
 end
 
 return Room

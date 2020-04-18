@@ -35,18 +35,11 @@ function Script:final()
 end
 
 function Script:on_input(action_id, action)
-	local over_objects = {}
-	for _, object in pairs(self.room.objects) do
-		if (object.view:is_hit(action.x, action.y)) then
-			table.insert(over_objects,object)
-		end
+	self.room:on_input(action_id, action)
+
+	if action_id == COMMON.HASHES.INPUT.TOUCH and action.pressed then
+		WORLD:user_click()
 	end
-	table.sort(over_objects,function (a,b)
-		local order_a = a.order or 0
-		local order_b = b.order or 0
-		return order_a>=order_b
-	end)
-	self.room:object_set_over(over_objects[1])
 end
 
 COMMON.N28S.register(Script())
