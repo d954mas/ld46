@@ -1,5 +1,5 @@
 local COMMON = require "libs.common"
-
+local Room = require "model.rooms.room"
 
 ---@class RoomConfig
 ---@field scene_name string
@@ -7,8 +7,6 @@ local COMMON = require "libs.common"
 ---@class World
 ---@field battle_model BattleModel|nil
 local World = COMMON.class("World")
-
-
 
 function World:initialize()
 end
@@ -18,17 +16,28 @@ function World:update(dt)
 end
 
 function World:init()
-	local SM = requiref "libs_project.sm"
+	self.SM = requiref "libs_project.sm"
 	self.ROOMS_CONFIGS = {
-		OPERATION = {scene_name = SM.ROOMS.OPERATION}
+		OPERATION = { scene_name = self.SM.ROOMS.OPERATION }
 	}
 
-	self.current_room = self.ROOMS_CONFIGS.OPERATION
+	self.rooms = {
+		OPERATION = Room(self.ROOMS_CONFIGS.OPERATION, self)
+	}
 
+	self:room_change(self.rooms.OPERATION)
+end
 
-	COMMON.APPLICATION.THREAD:add(function ()
-		while(SM:is_working())do coroutine.yield() end
-		SM:show(self.current_room.scene_name)
+---@param room Room
+function World:room_change(room)
+	self.current_room = assert(room)
+	assert(not self.room_changing, "already changing room")
+	self.room_changing = true
+	COMMON.APPLICATION.THREAD:add(function()
+		while (self.SM:is_working()) do coroutine.yield() end
+		self.SM:show(self.current_room.config.scene_name)
+		while (self.SM:is_working()) do coroutine.yield() end
+		self.room_changing = false
 	end)
 end
 
