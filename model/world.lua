@@ -25,7 +25,8 @@ function World:init()
 	self.SM = requiref "libs_project.sm"
 
 	self.objects = {
-		banana = { id = "banana", icon = hash("banana_icon") }
+		banana = { id = "banana", icon = hash("banana_icon") },
+		knife = { id = "knife", icon = hash("knife_icon") }
 	}
 
 	self.ROOMS_CONFIGS = {
@@ -40,9 +41,9 @@ function World:init()
 			pc_top = { id = "pc_top", action = true },
 			pc_wall = { id = "pc_wall", action = true },
 			TO_banana = { id = "TO_banana", take = self.objects.banana },
+			TO_knife = { id = "TO_knife", take = self.objects.knife, order = 11 },
 		} }
 	}
-
 
 	---@type InventoryObject[]
 	self.inventory = {}
@@ -60,18 +61,31 @@ function World:init()
 end
 
 function World:take_object(object)
-	if(self.active_object) then return end
+	if (self.active_object) then return end
 	assert(object)
 	assert(object.take)
 	self.current_room:remove_object(object)
-	assert(not COMMON.LUME.findi(self.inventory, object.take))
 	assert(not self.objects[object.id], "no object with id:" .. object.take.id)
-	table.insert(self.inventory, object.take)
+	self:inventory_add_object(object.take)
+end
+---@param object InventoryObject
+function World:inventory_add_object(object)
+	assert(object)
+	assert(not COMMON.LUME.findi(self.inventory, object))
+	table.insert(self.inventory, object)
+end
+
+---@param object InventoryObject
+function World:inventory_remove_object(object)
+	assert(object)
+	local idx = COMMON.LUME.findi(self.inventory, object)
+	assert(idx)
+	table.remove(self.inventory, idx)
 
 end
 
 function World:user_click()
-	if(self.active_object) then
+	if (self.active_object) then
 		return
 	end
 	if (self.room_can_click and self.current_room.object_over) then
@@ -79,6 +93,24 @@ function World:user_click()
 		if (self.current_room.object_over.take) then
 			self:take_object(self.current_room.object_over)
 		end
+	end
+end
+
+---@param object_1 InventoryObject
+---@param object_2 InventoryObject
+function World:mix_object(object_1, object_2)
+	assert(object_1)
+	assert(object_2)
+	--objects order is in alphabet. knife->banana == banana->knife
+	if (object_2.id < object_1.id) then
+		local object_tmp = object_1
+		object_1 = object_2
+		object_2 = object_tmp
+	end
+	print("mix " .. object_1.id .. " vs " .. object_2.id)
+
+	if (object_1.id == "banana") then
+		self:inventory_remove_object(object_1)
 	end
 end
 

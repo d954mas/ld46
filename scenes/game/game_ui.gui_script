@@ -156,16 +156,31 @@ function Script:on_input(action_id, action)
 				gui.delete_node(self.vh.icon_active.root)
 				self.vh.icon_active.root = nil
 			end
+
+			if (self.inventory_cell_active and self.inventory_cell_active ~= self.inventory_cell_over) then
+				local over_object = WORLD.inventory[self.inventory_cell_over_idx]
+				if over_object then
+					WORLD:mix_object(WORLD.active_object, WORLD.inventory[self.inventory_cell_over_idx])
+				end
+			end
+
 			self.inventory_cell_active = nil
 			WORLD.active_object = nil
 		end
 	end
 
 	if (WORLD.active_object) then
-		self:mouse_follow_set_text("active object:" .. WORLD.active_object.id)
+		local over_object = WORLD.inventory[self.inventory_cell_over_idx]
+		if (over_object and over_object ~= WORLD.active_object) then
+			self:mouse_follow_set_text("mix " .. WORLD.active_object.id .. " vs " .. over_object.id)
+		elseif(WORLD.room_can_click and WORLD.current_room.object_over)then
+			self:mouse_follow_set_text("use " .. WORLD.active_object.id .. " vs " .. WORLD.current_room.object_over.config.id)
+		else
+			self:mouse_follow_set_text("use " .. WORLD.active_object.id)
+		end
 		gui.set_position(self.vh.icon_active.root, vmath.vector3(action.x + self.vh.icon_active.pos_delta.x, action.y + self.vh.icon_active.pos_delta.y, 0))
 	else
-		self:room_set_over_object(WORLD.current_room.object_over,true)
+		self:room_set_over_object(WORLD.current_room.object_over, true)
 	end
 end
 
