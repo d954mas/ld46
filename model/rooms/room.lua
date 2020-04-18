@@ -51,6 +51,13 @@ function Room:add_object(object)
 	object:set_room(self)
 end
 
+---@param object RoomObject
+function Room:remove_object(object)
+	assert(self.objects[object.config.id])
+	self.objects[object.config.id] = nil
+	object.view:set_visible(false)
+end
+
 ---@return RoomObject
 function Room:get_object_by_id(id)
 	assert(id)

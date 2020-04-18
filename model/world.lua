@@ -35,7 +35,7 @@ function World:init()
 	}
 
 	self.objects = {
-		banana = { id = "banana", view = {icon_scale = 0.55} }
+		banana = { id = "banana", view = { icon_scale = 0.55 } }
 	}
 
 	self.inventory = {}
@@ -50,14 +50,18 @@ end
 
 function World:take_object(object)
 	assert(object)
-	assert(self.objects[object.id])
+	self.current_room:remove_object(object)
 	assert(not COMMON.LUME.findi(self.inventory, object))
 	table.insert(self.inventory, object)
+
 end
 
 function World:user_click()
-	if(self.current_room.object_over)then
+	if (self.current_room.object_over) then
 		COMMON.i("click on:" .. self.current_room.object_over.config.id, "ROOM")
+		if (self.current_room.object_over.take) then
+			self:take_object(self.current_room.object_over)
+		end
 	end
 end
 

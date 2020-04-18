@@ -28,7 +28,11 @@ end
 
 function Object:is_hit(x, y)
 	local node = self.node_touch or self.config.root
-	return gui.pick_node(node, x, y)
+	return gui.is_enabled(self.config.root) and gui.pick_node(node, x, y)
+end
+
+function Object:set_visible(visible)
+	gui.set_enabled(self.config.root, visible)
 end
 
 return Object
