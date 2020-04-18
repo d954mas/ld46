@@ -111,7 +111,7 @@ nodes {
   pivot: PIVOT_S
   adjust_mode: ADJUST_MODE_FIT
   parent: "root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -199,14 +199,14 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "objects_icons/empty"
+  texture: "game/white"
   id: "inventory/cell_1/root"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_1"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -218,7 +218,6 @@ nodes {
   clipping_visible: true
   clipping_inverted: false
   alpha: 1.0
-  overridden_fields: 9
   template_node_child: true
   size_mode: SIZE_MODE_MANUAL
 }
@@ -262,7 +261,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_1/root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -317,7 +316,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_1/root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -412,7 +411,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_2"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -467,7 +466,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_2/root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -522,7 +521,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_2/root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -617,7 +616,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_3"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -672,7 +671,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_3/root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -727,7 +726,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_3/root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -822,7 +821,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_4"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -877,7 +876,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_4/root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -932,7 +931,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_4/root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1027,7 +1026,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_5"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1082,7 +1081,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_5/root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1137,7 +1136,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_5/root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1232,7 +1231,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_6"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1287,7 +1286,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_6/root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1342,7 +1341,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_6/root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1437,7 +1436,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_7"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1492,7 +1491,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_7/root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1547,7 +1546,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_7/root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1642,7 +1641,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_8"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1697,7 +1696,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_8/root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1752,7 +1751,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_8/root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1847,7 +1846,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_9"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1902,7 +1901,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_9/root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -1957,7 +1956,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "inventory/cell_9/root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -2012,7 +2011,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "root"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -2081,7 +2080,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
   parent: "mouse_follow"
-  layer: ""
+  layer: "text"
   inherit_alpha: true
   alpha: 1.0
   outline_alpha: 1.0
@@ -2130,7 +2129,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "mouse_follow"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -2185,7 +2184,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "mouse_follow"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -2240,7 +2239,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "mouse_follow"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -2295,7 +2294,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "mouse_follow"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -2350,7 +2349,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "mouse_follow"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -2364,6 +2363,15 @@ nodes {
   alpha: 1.0
   template_node_child: false
   size_mode: SIZE_MODE_AUTO
+}
+layers {
+  name: "below"
+}
+layers {
+  name: "text"
+}
+layers {
+  name: "top"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT

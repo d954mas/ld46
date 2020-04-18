@@ -32,6 +32,10 @@ function Script:bind_vh()
 			root = gui.get_node("inventory"),
 			---@type InventoryCellVH[]
 			cells = {}
+		},
+		icon_active = {
+			root = nil,
+			pos_delta = vmath.vector3()
 		}
 	}
 	for i = 1, 8 do
@@ -68,6 +72,10 @@ function Script:init()
 	self:bind_vh()
 	self:init_gui()
 	self:set_icon(nil)
+	---@type InventoryCellVH
+	self.inventory_cell_over = nil
+	---@type InventoryCellVH
+	self.inventory_cell_active = nil
 end
 
 function Script:update_inventory()
@@ -87,14 +95,10 @@ function Script:final()
 	COMMON.input_release()
 end
 
-function Script:on_input(action_id, action)
-
-end
-
 ---@param object RoomObject
-function Script:room_set_over_object(object)
+function Script:room_set_over_object(object, force)
 	if (not WORLD.room_can_click) then object = nil end
-	if (self.object_over == object) then return end
+	if (self.object_over == object and not force) then return end
 	self.object_over = object
 	self:set_icon(object)
 	if (object) then
@@ -121,8 +125,48 @@ function Script:on_input(action_id, action)
 		else
 			self:room_set_over_object(nil)
 		end
+		self.inventory_cell_over = nil
+		self.inventory_cell_over_idx = nil
+		for idx, cell in ipairs(self.vh.inventory.cells) do
+			if (gui.pick_node(cell.root, action.x, action.y)) then
+				self.inventory_cell_over = cell
+				self.inventory_cell_over_idx = idx
+				break
+			end
+		end
 	end
 
+	if (action_id == COMMON.HASHES.INPUT.TOUCH) then
+		if (action.pressed) then
+			self.touch_pos = vmath.vector3(action.x, action.y, 0)
+			local object = WORLD.inventory[self.inventory_cell_over_idx]
+			if (object) then
+				self.inventory_cell_active = self.inventory_cell_over
+				self.vh.icon_active.root = gui.clone(self.inventory_cell_active.icon)
+
+				self.vh.icon_active.pos_delta.x = gui.get_position(self.vh.icon_active.root).x - action.x
+				self.vh.icon_active.pos_delta.y = gui.get_position(self.vh.icon_active.root).y - action.y
+				gui.set_enabled(self.inventory_cell_active.icon, false)
+				WORLD.active_object = object
+			end
+		end
+		if (action.released) then
+			if (self.inventory_cell_active) then
+				gui.set_enabled(self.inventory_cell_active.icon, true)
+				gui.delete_node(self.vh.icon_active.root)
+				self.vh.icon_active.root = nil
+			end
+			self.inventory_cell_active = nil
+			WORLD.active_object = nil
+		end
+	end
+
+	if (WORLD.active_object) then
+		self:mouse_follow_set_text("active object:" .. WORLD.active_object.id)
+		gui.set_position(self.vh.icon_active.root, vmath.vector3(action.x + self.vh.icon_active.pos_delta.x, action.y + self.vh.icon_active.pos_delta.y, 0))
+	else
+		self:room_set_over_object(WORLD.current_room.object_over,true)
+	end
 end
 
 COMMON.N28S.register(Script())

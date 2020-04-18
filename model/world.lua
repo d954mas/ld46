@@ -53,11 +53,14 @@ function World:init()
 
 	self.room_can_click = true
 
+	self.active_object = nil
+
 	self:room_change(self.rooms.OPERATION)
 
 end
 
 function World:take_object(object)
+	if(self.active_object) then return end
 	assert(object)
 	assert(object.take)
 	self.current_room:remove_object(object)
@@ -68,6 +71,9 @@ function World:take_object(object)
 end
 
 function World:user_click()
+	if(self.active_object) then
+		return
+	end
 	if (self.room_can_click and self.current_room.object_over) then
 		COMMON.i("click on:" .. self.current_room.object_over.config.id, "ROOM")
 		if (self.current_room.object_over.take) then

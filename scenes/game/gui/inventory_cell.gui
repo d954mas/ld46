@@ -52,7 +52,7 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -107,7 +107,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "root"
-  layer: ""
+  layer: "below"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -162,7 +162,7 @@ nodes {
   pivot: PIVOT_CENTER
   adjust_mode: ADJUST_MODE_FIT
   parent: "root1"
-  layer: ""
+  layer: "top"
   inherit_alpha: true
   slice9 {
     x: 0.0
@@ -176,6 +176,15 @@ nodes {
   alpha: 1.0
   template_node_child: false
   size_mode: SIZE_MODE_AUTO
+}
+layers {
+  name: "below"
+}
+layers {
+  name: "text"
+}
+layers {
+  name: "top"
 }
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT
