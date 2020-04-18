@@ -20,6 +20,19 @@ function Object:set_room(room)
 	self.room = room
 end
 
+function Object:set_info(info)
+	assert(not self.info and not self.action and not self.speech)
+	self.info = info
+end
+function Object:set_action(action)
+	assert(not self.info and not self.action and not self.speech)
+	self.action = action
+end
+function Object:set_speech(action)
+	assert(not self.info and not self.action and not self.speech)
+	self.speech = action
+end
+
 ---@param view RoomObjectView
 function Object:set_view(view)
 	view:set_room_object(self)

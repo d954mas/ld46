@@ -16,19 +16,24 @@ function Room:initialize(config, world)
 	---@type RoomObject[]
 	self.objects = {}
 	for k, object in pairs(self.config.objects) do
-		self:add_object(RoomObject({ id = object.id }))
+		local room_object = RoomObject({ id = object.id })
+		if (object.info) then room_object:set_info(object.info) end
+		if (object.speech) then room_object:set_speech(object.speech) end
+		if (object.action) then room_object:set_action(object.action) end
+		assert(room_object.info or room_object.action or room_object.speech, "no action:" .. object.id)
+		self:add_object(room_object)
 	end
 end
 
 ---@param object RoomObject
 function Room:object_set_over(object)
-	if(self.object_over == object) then return end
-	if(self.object_over) then
-		COMMON.LOG.i("object:" .. self.object_over.config.id .. " over end","ROOM")
+	if (self.object_over == object) then return end
+	if (self.object_over) then
+		COMMON.LOG.i("object:" .. self.object_over.config.id .. " over end", "ROOM")
 	end
 	self.object_over = object
-	if(self.object_over) then
-		COMMON.LOG.i("object:" .. self.object_over.config.id .. " over","ROOM")
+	if (self.object_over) then
+		COMMON.LOG.i("object:" .. self.object_over.config.id .. " over", "ROOM")
 	end
 end
 

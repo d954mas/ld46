@@ -1,6 +1,7 @@
 local COMMON = require "libs.common"
 local WORLD = require "model.world"
 local BaseScene = require "libs.sm.scene"
+local CURSOR_HELPER = require "libs_project.cursor_helper"
 
 ---@class GameScene:Scene
 local Scene = BaseScene:subclass("GameScene")
@@ -14,9 +15,14 @@ function Scene:load_done()
 end
 
 function Scene:show_done()
+	COMMON.input_acquire()
+	CURSOR_HELPER.register_listeners()
+	CURSOR_HELPER.lock_cursor()
 end
 
 function Scene:hide_done()
+	COMMON.input_release()
+	CURSOR_HELPER.unregister_listener()
 end
 
 function Scene:pause_done()

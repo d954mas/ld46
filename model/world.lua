@@ -1,8 +1,6 @@
 local COMMON = require "libs.common"
 local Room = require "model.rooms.room"
 
-
-
 ---@class World
 ---@field battle_model BattleModel|nil
 local World = COMMON.class("World")
@@ -11,9 +9,11 @@ function World:initialize()
 end
 
 function World:update(dt)
-	if(self.current_room) then
-		local ctx = COMMON.CONTEXT:set_context_top_game_ui()
-		ctx.data:room_set_over_object(self.current_room.object_over)
+	if (self.current_room) then
+		if(COMMON.CONTEXT:exist(COMMON.CONTEXT.NAMES.GAME_UI)) then
+			local ctx = COMMON.CONTEXT:set_context_top_game_ui()
+			ctx.data:room_set_over_object(self.current_room.object_over)
+		end
 	end
 end
 
@@ -21,17 +21,16 @@ function World:init()
 	self.SM = requiref "libs_project.sm"
 	self.ROOMS_CONFIGS = {
 		OPERATION = { scene_name = self.SM.ROOMS.OPERATION, objects = {
-			box = {id = "box"},
-			operation_table = {id = "operation_table"},
-			door = {id = "door"},
-			lamp = {id = "lamp"},
-			human = {id = "human"},
-			table_with_wheels = {id = "table_with_wheels"},
-			pc_top = {id = "pc_top"},
-			pc_wall = {id = "pc_wall"},
+			box = { id = "box", info = true },
+			operation_table = { id = "operation_table", speech = true },
+			door = { id = "door", action = true },
+			lamp = { id = "lamp", info = true },
+			human = { id = "human", action = true },
+			table_with_wheels = { id = "table_with_wheels", action = true },
+			pc_top = { id = "pc_top", action = true },
+			pc_wall = { id = "pc_wall", action = true },
 		} }
 	}
-
 
 	self.rooms = {
 		OPERATION = Room(self.ROOMS_CONFIGS.OPERATION, self)

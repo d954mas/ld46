@@ -9,6 +9,7 @@ local GA = require "libs.google_analytics"
 local EVENTS = require "libs_project.events"
 local SCENE_LOADER = require "libs.sm.scene_loader"
 local WORLD = require "model.world"
+local CURSOR_HELPER = require "libs_project.cursor_helper"
 
 local RUN_TEST = false
 
@@ -94,6 +95,7 @@ end
 function Script:on_input(action_id, action)
 	COMMON.INPUT.handle_pressed_keys(action_id, action)
 	if self.input:on_input(self, action_id, action) then return true end
+	CURSOR_HELPER.on_input(action_id,action)
 	return SM:on_input(action_id, action)
 end
 

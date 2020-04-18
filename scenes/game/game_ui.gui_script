@@ -7,12 +7,30 @@ function Script:bind_vh()
 	self.vh = {
 		mouse_follow = {
 			root = gui.get_node("mouse_follow"),
-			text = gui.get_node("mouse_follow/text")
+			text = gui.get_node("mouse_follow/text"),
+			icon_base = gui.get_node("mouse_follow/icon_base"),
+			icon_info = gui.get_node("mouse_follow/icon_info"),
+			icon_speech = gui.get_node("mouse_follow/icon_speech"),
+			icon_action = gui.get_node("mouse_follow/icon_action"),
 		}
 	}
 	self.view = {
 
 	}
+end
+
+---@param object RoomObject
+function Script:set_icon(object)
+	gui.set_enabled(self.vh.mouse_follow.icon_base, false)
+	gui.set_enabled(self.vh.mouse_follow.icon_info, false)
+	gui.set_enabled(self.vh.mouse_follow.icon_speech, false)
+	gui.set_enabled(self.vh.mouse_follow.icon_action, false)
+	if (not object) then gui.set_enabled(self.vh.mouse_follow.icon_base, true)
+	else
+		if (object.speech) then gui.set_enabled(self.vh.mouse_follow.icon_speech, true) end
+		if (object.action) then gui.set_enabled(self.vh.mouse_follow.icon_action, true) end
+		if (object.info) then gui.set_enabled(self.vh.mouse_follow.icon_info, true) end
+	end
 end
 
 function Script:init_gui()
@@ -21,7 +39,7 @@ end
 
 function Script:init()
 	COMMON.input_acquire()
-	COMMON.CONTEXT:register(COMMON.CONTEXT.NAMES.GAME_UI,self)
+	COMMON.CONTEXT:register(COMMON.CONTEXT.NAMES.GAME_UI, self)
 	self:bind_vh()
 	self:init_gui()
 end
@@ -34,17 +52,18 @@ function Script:final()
 end
 
 function Script:on_input(action_id, action)
-	if(action_id == nil or action_id == COMMON.HASHES.INPUT.TOUCH)then
-		gui.set_position(self.vh.mouse_follow.root,vmath.vector3(action.x,action.y,0))
+	if (action_id == nil or action_id == COMMON.HASHES.INPUT.TOUCH) then
+		gui.set_position(self.vh.mouse_follow.root, vmath.vector3(action.x, action.y, 0))
 	end
 end
 
 ---@param object RoomObject
 function Script:room_set_over_object(object)
 
-	if(self.object_over == object) then return end
+	if (self.object_over == object) then return end
 	self.object_over = object
-	if(object)then
+	self:set_icon(object)
+	if (object) then
 		self:mouse_follow_set_text(object.config.id)
 	else
 		self:mouse_follow_set_text("")
@@ -53,7 +72,7 @@ function Script:room_set_over_object(object)
 end
 
 function Script:mouse_follow_set_text(text)
-	gui.set_text(self.vh.mouse_follow.text,text)
+	gui.set_text(self.vh.mouse_follow.text, text)
 end
 
 COMMON.N28S.register(Script())
