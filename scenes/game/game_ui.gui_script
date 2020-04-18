@@ -41,7 +41,9 @@ end
 
 ---@param object RoomObject
 function Script:room_set_over_object(object)
+
 	if(self.object_over == object) then return end
+	self.object_over = object
 	if(object)then
 		self:mouse_follow_set_text(object.config.id)
 	else
