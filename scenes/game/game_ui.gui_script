@@ -1,7 +1,21 @@
 local COMMON = require "libs.common"
+local WORLD = require "model.world"
+
+---@class InventoryCellVH
+---@field root node
+---@field icon node
 
 ---@class GameUIGuiScript
 local Script = COMMON.new_n28s()
+
+---@return InventoryCellVH
+function Script:bind_inventory_cell_vh(id)
+	local root_name = "inventory/cell_" .. id
+	return {
+		root = assert(gui.get_node(root_name .. "/root")),
+		icon = assert(gui.get_node(root_name .. "/icon"))
+	}
+end
 
 function Script:bind_vh()
 	self.vh = {
@@ -13,8 +27,16 @@ function Script:bind_vh()
 			icon_speech = gui.get_node("mouse_follow/icon_speech"),
 			icon_action = gui.get_node("mouse_follow/icon_action"),
 			icon_take = gui.get_node("mouse_follow/icon_take"),
+		},
+		inventory = {
+			root = gui.get_node("inventory"),
+			---@type InventoryCellVH[]
+			cells = {}
 		}
 	}
+	for i = 1, 8 do
+		self.vh.inventory.cells[i] = self:bind_inventory_cell_vh(i)
+	end
 	self.view = {
 
 	}
@@ -45,9 +67,20 @@ function Script:init()
 	COMMON.CONTEXT:register(COMMON.CONTEXT.NAMES.GAME_UI, self)
 	self:bind_vh()
 	self:init_gui()
+	self:set_icon(nil)
 end
 
-function Script:update(dt) end
+function Script:update_inventory()
+	for i, cell in ipairs(self.vh.inventory.cells) do
+		local object = WORLD.inventory[i]
+		gui.play_flipbook(cell.icon, object and object.icon or COMMON.HASHES.EMPTY)
+
+	end
+end
+
+function Script:update(dt)
+	self:update_inventory()
+end
 
 function Script:final()
 	COMMON.CONTEXT:unregister(COMMON.CONTEXT.NAMES.GAME_UI)
@@ -55,14 +88,12 @@ function Script:final()
 end
 
 function Script:on_input(action_id, action)
-	if (action_id == nil or action_id == COMMON.HASHES.INPUT.TOUCH) then
-		gui.set_position(self.vh.mouse_follow.root, vmath.vector3(action.x, action.y, 0))
-	end
+
 end
 
 ---@param object RoomObject
 function Script:room_set_over_object(object)
-
+	if (not WORLD.room_can_click) then object = nil end
 	if (self.object_over == object) then return end
 	self.object_over = object
 	self:set_icon(object)
@@ -76,6 +107,22 @@ end
 
 function Script:mouse_follow_set_text(text)
 	gui.set_text(self.vh.mouse_follow.text, text)
+end
+
+function Script:on_input(action_id, action)
+	if (action_id == nil or action_id == COMMON.HASHES.INPUT.TOUCH) then
+		gui.set_position(self.vh.mouse_follow.root, vmath.vector3(action.x, action.y, 0))
+	end
+
+	if action_id == nil or action_id == COMMON.HASHES.INPUT.TOUCH then
+		WORLD.room_can_click = not gui.pick_node(self.vh.inventory.root, action.x, action.y)
+		if (WORLD.room_can_click) then
+			self:room_set_over_object(WORLD.current_room.object_over)
+		else
+			self:room_set_over_object(nil)
+		end
+	end
+
 end
 
 COMMON.N28S.register(Script())

@@ -17,8 +17,17 @@ function World:update(dt)
 	end
 end
 
+---@class InventoryObject
+---@field id string
+---@field icon string|hash
+
 function World:init()
 	self.SM = requiref "libs_project.sm"
+
+	self.objects = {
+		banana = { id = "banana", icon = hash("banana_icon") }
+	}
+
 	self.ROOMS_CONFIGS = {
 		--TO_ Take Object
 		OPERATION = { scene_name = self.SM.ROOMS.OPERATION, objects = {
@@ -30,19 +39,19 @@ function World:init()
 			table_with_wheels = { id = "table_with_wheels", action = true },
 			pc_top = { id = "pc_top", action = true },
 			pc_wall = { id = "pc_wall", action = true },
-			TO_banana = { id = "TO_banana", take = true },
+			TO_banana = { id = "TO_banana", take = self.objects.banana },
 		} }
 	}
 
-	self.objects = {
-		banana = { id = "banana", view = { icon_scale = 0.55 } }
-	}
 
+	---@type InventoryObject[]
 	self.inventory = {}
 
 	self.rooms = {
 		OPERATION = Room(self.ROOMS_CONFIGS.OPERATION, self)
 	}
+
+	self.room_can_click = true
 
 	self:room_change(self.rooms.OPERATION)
 
@@ -50,14 +59,16 @@ end
 
 function World:take_object(object)
 	assert(object)
+	assert(object.take)
 	self.current_room:remove_object(object)
-	assert(not COMMON.LUME.findi(self.inventory, object))
-	table.insert(self.inventory, object)
+	assert(not COMMON.LUME.findi(self.inventory, object.take))
+	assert(not self.objects[object.id], "no object with id:" .. object.take.id)
+	table.insert(self.inventory, object.take)
 
 end
 
 function World:user_click()
-	if (self.current_room.object_over) then
+	if (self.room_can_click and self.current_room.object_over) then
 		COMMON.i("click on:" .. self.current_room.object_over.config.id, "ROOM")
 		if (self.current_room.object_over.take) then
 			self:take_object(self.current_room.object_over)

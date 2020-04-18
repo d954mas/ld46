@@ -35,6 +35,7 @@ end
 
 function Object:set_take(take)
 	assert(not self.info and not self.action and not self.speech and not self.take)
+	assert(take.id)
 	self.take = take
 end
 
